@@ -70,24 +70,24 @@ void loop() {
   Serial.println(" cm");
 
   // handle sound if too close
-  if(distance < 10){
+  if(distance < 20){ // check if accuracy remains at close range 
     tone(speaker, 500); // Start 500 Hz tone
   }else{
-    notone(speaker); // Stop tone
+    notone(speaker); // Stop tone, might kill distress sound
   }
 
   // button handling
   buttonState = digitalRead(button);
   if(buttonState == HIGH){
-    // if pressed send SOS?
+    // if pressed send SOS, also needs GPS coords!!!
     Serial.println("TXing");
     myLora.tx("SOS");
     // Also sound speaker?
-    tone(speaker, 1000); // Start 1 KHz tone
-    delay(1000);
+    tone(speaker, 1000); // Start 1 KHz tone for 10 secs
+    delay(10000);
     notone(speaker); // Stop tone
   }else{
-    // if not pressed do nothing?
+    // if not pressed do nothing? maybe have normal behavior run here?
   }
 
   // Calc battery voltage
