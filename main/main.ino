@@ -7,7 +7,7 @@
 // LED(s) = D5
 // Speaker = D6
 // SWITCH (Button) = D7
-// Ultra sonic = D8, D9
+// Ultra Sonic = D8, D9
 // Photocell = A0
 // Battery voltage sensor = A1
 // GPIO Extender (maybe redundant) = A4, A5
@@ -18,8 +18,13 @@ rn2xx3 myLora(mySerial);
 const int led = 5;
 const int speaker = 6;
 const int button = 7;
+const int US_Echo = 8;
+const int US_Trig = 9;
 const int photoRes = A0;
 const int voltPin = A1;
+
+float timing = 0.0;
+float distance = 0.0;
 
 const float Vcc = 3.3;
 const float R1 = 10000.0;   
@@ -34,6 +39,8 @@ void setup() {
   pinMode(led, OUTPUT);
   pinMode(speaker, OUTPUT);
   pinMode(button, INPUT);
+  pinMode(US_Echo, INPUT);
+  pinMode(US_Trig, OUTPUT);
   pinMode(photoRes, INPUT);
   pinMode(voltPin, INPUT);
 
@@ -47,16 +54,35 @@ void setup() {
 }
 
 void loop() {
+  // Ultrasonic behavior
+  digitalWrite(US_Trig, LOW);
+  delay(2);
+  digitalWrite(US_Trig, HIGH);
+  delay(10);
+  digitalWrite(US_Trig, LOW);
 
-  // Transmission tmp 
-  Serial.println("TXing");
-  myLora.tx("tmp");
-  delay(10000);
+  timing = pulseIn(US_Echo, HIGH);
+  distance = (timing*0.0343)/2; // distance in cm
+
+  // debug distance
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // handle sound if too close
+  if(distance < 10){
+    tone(speaker, 500); // Start 500 Hz tone
+  }else{
+    notone(speaker); // Stop tone
+  }
 
   // button handling
   buttonState = digitalRead(button);
   if(buttonState == HIGH){
-    // if pressed send SOS? Also sound speaker?
+    // if pressed send SOS?
+    Serial.println("TXing");
+    myLora.tx("SOS");
+    // Also sound speaker?
     tone(speaker, 1000); // Start 1 KHz tone
     delay(1000);
     notone(speaker); // Stop tone
@@ -79,7 +105,7 @@ void loop() {
     digitalWrite(led, LOW);
   }
 
-  // Go sleep?
+  // Go sleep? Need to handle some kind of sleep behavior
   delay(1000);
 }
 
