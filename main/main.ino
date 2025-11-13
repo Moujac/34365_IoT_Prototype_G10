@@ -1,3 +1,6 @@
+#include <rn2xx3.h>
+#include <SoftwareSerial.h>
+
 // PIN Allocation:
 // LoraWan (RN2483A) = D10, D11, D12 (As previusly used in class)
 // GPS Tx & Rx = D3, D4
@@ -9,9 +12,12 @@
 // Battery voltage sensor = A1
 // GPIO Extender (maybe redundant) = A4, A5
 
+SoftwareSerial mySerial(10, 11); // RX, TX
+rn2xx3 myLora(mySerial);
+
 const int led = 5;
 const int speaker = 6;
-const int SWITCH = 7;
+const int button = 7;
 const int photoRes = A0;
 const int voltPin = A1;
 
@@ -19,7 +25,7 @@ const float Vcc = 3.3;
 const float R1 = 10000.0;   
 const float R2 = 10000.0;   
 
-int switchState = 0;
+int buttonState = 0;
 
 int photoVal = 0; // 0 to 1023
 
@@ -27,16 +33,29 @@ void setup() {
   // Setup pins
   pinMode(led, OUTPUT);
   pinMode(speaker, OUTPUT);
-  pinMode(SWITCH, INPUT);
+  pinMode(button, INPUT);
   pinMode(photoRes, INPUT);
   pinMode(voltPin, INPUT);
+
+  // Setup LoraWan uplink
+  // Open serial communications and wait for port to open:
+  Serial.begin(57600); //serial port to computer
+  mySerial.begin(9600); //serial port to radio
+  Serial.println("Startup");
+  initialize_radio();
+  myLora.tx("TTN Mapper on TTN Enschede node");
 }
 
 void loop() {
 
-  // Switch
-  switchState = digitalRead(SWITCH);
-  if(switchState == HIGH){
+  // Transmission tmp 
+  Serial.println("TXing");
+  myLora.tx("tmp");
+  delay(10000);
+
+  // button handling
+  buttonState = digitalRead(button);
+  if(buttonState == HIGH){
     // if pressed send SOS? Also sound speaker?
     tone(speaker, 1000); // Start 1 KHz tone
     delay(1000);
@@ -62,4 +81,50 @@ void loop() {
 
   // Go sleep?
   delay(1000);
+}
+
+void initialize_radio(){
+  //reset rn2483
+  pinMode(12, OUTPUT);
+  digitalWrite(12, LOW);
+  delay(500);
+  digitalWrite(12, HIGH);
+
+  delay(100); //wait for the RN2xx3's startup message
+  mySerial.flush();
+
+  //Autobaud the rn2483 module to 9600. The default would otherwise be 57600.
+  myLora.autobaud();
+
+  //check communication with radio
+  String hweui = myLora.hweui();
+  while(hweui.length() != 16){
+    Serial.println("Communication with RN2xx3 unsuccessful. Power cycle the board.");
+    Serial.println(hweui);
+    delay(10000);
+    hweui = myLora.hweui();
+  }
+
+  //print out the HWEUI so that we can register it via ttnctl
+  Serial.println("When using OTAA, register this DevEUI: ");
+  Serial.println(myLora.hweui());
+  Serial.println("RN2xx3 firmware version:");
+  Serial.println(myLora.sysver());
+
+  //configure your keys and join the network
+  Serial.println("Trying to join TTN");
+  bool join_result = false;
+
+  // CHANGE THIS TO OUR APP EUI AND APP KEY!!!
+  const char *appEui = "0000000000000000";
+  const char *appKey = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
+  join_result = myLora.initOTAA(appEui, appKey);
+
+  while(!join_result){
+    Serial.println("Unable to join. Are your keys correct, and do you have TTN coverage?");
+    delay(60000); //delay a minute before retry
+    join_result = myLora.init();
+  }
+  Serial.println("Successfully joined TTN");
 }
