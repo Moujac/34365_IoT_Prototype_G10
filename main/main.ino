@@ -73,7 +73,7 @@ void loop() {
   if(distance < 20){ // check if accuracy remains at close range 
     tone(speaker, 500); // Start 500 Hz tone
   }else{
-    notone(speaker); // Stop tone, might kill distress sound
+    noTone(speaker); // Stop tone, might kill distress sound
   }
 
   // button handling
@@ -85,7 +85,7 @@ void loop() {
     // Also sound speaker?
     tone(speaker, 1000); // Start 1 KHz tone for 10 secs
     delay(10000);
-    notone(speaker); // Stop tone
+    noTone(speaker); // Stop tone
   }else{
     // if not pressed do nothing? maybe have normal behavior run here?
   }
