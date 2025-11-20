@@ -38,6 +38,9 @@ static inline void encodeInt32BE(int32_t value, uint8_t* out) {
 static inline void led_on()  { digitalWrite(13, HIGH); }
 static inline void led_off() { digitalWrite(13, LOW);  }
 
+// Global singla received variable
+bool signal_received = false;
+
 // LoRaWAN init
 void initialize_radio() {
   lora_serial.listen(); // Listen to the LORA Serial
@@ -114,6 +117,9 @@ void handleDownlink(String msg) {
   // If we receive: 01 = help confirmation
   if (msg == "01" || msg == "1") {
     Serial.println("Signal received. Help is coming!");
+    signal_received = true;
+    delay(1000);
+    sendAlertPacket(false, LAT_DEG, LON_DEG);
     // buzzer will also be triggered here
   } else {
     Serial.print("Unknown downlink command: ");
@@ -154,17 +160,34 @@ void setup() {
   // Initialize radio/lora
   initialize_radio();
 
-  // Wait 1.5s
-  delay(1500);
+  // Wait 1s
+  delay(1000);
+
+  // Send an initial false alert
+  sendAlertPacket(false, LAT_DEG, LON_DEG);
+
+  // Wait 15s. Simulate that the user did not pressed the button yet
+  delay(15000);
+}
+
+void buttonPressed(){
+  get_location(); // Get current location
+  signal_received = false; // Initialize signal receival as False
+  sendAlertPacket(true, LAT_DEG, LON_DEG); // Send location and alert
+  delay(1000);
+  // Send an uplink message until the caregiver confirms acknowledgment of the alert
+  // This is needed because LORA can receive downlink only after an uplink
+  while (signal_received == false){ 
+    sendAlertPacket(false, LAT_DEG, LON_DEG);
+    delay(1000);
+  }
 }
 
 void loop() {
-  // Simulate button press (every 15s):
+  // Simulate button press (every 60s):
   // Get location from GPS module and send it to TTN.
   // If a downlink confirmation is recived, we will display the message (and tigger the buzzer) as well.
-
-  get_location();
-  sendAlertPacket(true, LAT_DEG, LON_DEG);
-
-  delay(15000);
+  
+  buttonPressed();
+  delay(60000);
 }
