@@ -146,16 +146,16 @@ void emergencyButtonHandler(){
   int buttonState = digitalRead(buttonPin);
   if(buttonState == HIGH){
     //#! if pressed send SOS, also needs GPS coords!!!
-    Serial.println("TXing");
+    //Serial.println("TXing");
     // GET LOCATION AND SEND ALERT PACKET
     get_location();
     sendAlertPacket(true, LAT_DEG, LON_DEG);
     //LoraComponent.tx("SOS");
     //#! Also sound speaker?
-    //tone(speakerPin, 1000); // Start 1 KHz tone for 10 secs
+    tone(speakerPin, 1000); // Start 1 KHz tone for 10 secs
     delay(10000); //#!-J this delay is good, as a constant siren would get tedious - but maybe it ought to be one that you turn off by pressing the button again.
                       //#+J this would require more coordination with deepsleep though.
-    //noTone(speakerPin); // Stop tone
+    noTone(speakerPin); // Stop tone
   }else{
     //#! if not pressed do nothing? maybe have normal behavior run here?
       //#-J no need - it will be an interrupt. However, we could consider instead having the interrupt start GNSS'es cold/warm/hot start, initialize the LoRa, and then afterwards evaluate whenever GNSS is done. otherwise, it sets the appropiate state, and goes back to sleep
@@ -310,25 +310,11 @@ void setup() {
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);  //# HERE TO INSERT DIFFERENT SLEEPMODE
   sleep_enable(); 
   // Enable built-in LED pin for output 
-  
 
 } 
 
 void Active(){
 
-  int status = 0;
-  switch(status){
-    case 0: //not long break, just standby - emergency
-      emergency();
-    break;
-    case 1: //sleeps for a long time, but standby - Active
-    case 2: //sleeps for short time, but deepsleep - Active
-      Active();
-    break;
-    case 3: //sleep for long time and deepsleep - Sleep
-      sleep();
-    break;
-  }
 }
 
 void emergency(){
