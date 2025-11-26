@@ -52,6 +52,9 @@ static inline void encodeInt32BE(int32_t value, uint8_t* out) {
 
 static inline void led_on()  { digitalWrite(13, HIGH); }
 static inline void led_off() { digitalWrite(13, LOW);  }
+
+// Global singla received variable
+bool signal_received = false;
 //// GPS END ////
 
 #define PCF8574_ADDR 0x20 // Standardadresse (kan variere afhængigt af A0, A1, A2)
@@ -107,9 +110,16 @@ void setupComponents(){
   // Initialize radio/lora
   initialize_radio();
 
-  // Wait 1.5s
-  delay(1500);
+  // Wait 1s
+  delay(1000);
+
+  // Send an initial false alert
+  sendAlertPacket(false, LAT_DEG, LON_DEG);
+
+  // Wait 15s. Simulate that the user did not pressed the button yet
+  delay(15000);
 }
+
 /*******************************
 Ultra sonic measurement and the speaker
 J-FIX tone notone
@@ -148,9 +158,7 @@ void emergencyButtonHandler(){
     //#! if pressed send SOS, also needs GPS coords!!!
     //Serial.println("TXing");
     // GET LOCATION AND SEND ALERT PACKET
-    get_location();
-    sendAlertPacket(true, LAT_DEG, LON_DEG);
-    //LoraComponent.tx("SOS");
+    buttonPressed(); // NEW FUNCTION FOR GPS
     //#! Also sound speaker?
     tone(speakerPin, 1000); // Start 1 KHz tone for 10 secs
     delay(10000); //#!-J this delay is good, as a constant siren would get tedious - but maybe it ought to be one that you turn off by pressing the button again.
@@ -459,6 +467,9 @@ void handleDownlink(String msg) {
   // If we receive: 01 = help confirmation
   if (msg == "01" || msg == "1") {
     Serial.println("Signal received. Help is coming!");
+    signal_received = true;
+    delay(1000);
+    sendAlertPacket(false, LAT_DEG, LON_DEG);
     // buzzer will also be triggered here
   } else {
     Serial.print("Unknown downlink command: ");
@@ -479,5 +490,18 @@ void get_location(){
           sent_loc = true;
         }
       }
+  }
+}
+
+void buttonPressed(){
+  get_location(); // Get current location
+  signal_received = false; // Initialize signal receival as False
+  sendAlertPacket(true, LAT_DEG, LON_DEG); // Send location and alert
+  delay(1000);
+  // Send an uplink message until the caregiver confirms acknowledgment of the alert
+  // This is needed because LORA can receive downlink only after an uplink
+  while (signal_received == false){ 
+    sendAlertPacket(false, LAT_DEG, LON_DEG);
+    delay(1000);
   }
 }
