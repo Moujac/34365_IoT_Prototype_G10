@@ -1,21 +1,68 @@
+#include <avr/sleep.h>
+#include <avr/wdt.h>
+#include <Wire.h>
 #include <rn2xx3.h>
 #include <SoftwareSerial.h>
+#include <stdint.h>
+#include <math.h>
+#include <TinyGPS++.h>
 
 // PIN Allocation:
 // LoraWan (RN2483A) = D10, D11, D12 (As previusly used in class)
-// GPS Tx & Rx = D3, D4
-// LED(s) = D5
+// GPS Tx & Rx = D4, D5
+// LED(s) = D3
 // Speaker = D6
 // SWITCH (Button) = D7
 // Ultra Sonic = D8, D9
 // Photocell = A0
-// Battery voltage sensor = A1
+// Battery voltage sensor = A1 (CURRENTLY NOT USED)
 // GPIO Extender (maybe redundant) = A4, A5
 
-SoftwareSerial mySerial(10, 11); // RX, TX
-rn2xx3 myLora(mySerial);
+//// GPS STUFF ////
+// Define GPS Module RX/TX Pins and Baud Rate
+static const int RXPinGPS = 4, TXPinGPS = 5;  //On the actual module are: RXPinGPS = TX on the module, TXPinGPS = RX on the module
+static const uint32_t GPSBaud = 9600;
 
-const int led = 5;
+// Create a TinyGPS++ object
+TinyGPSPlus gps;
+
+// Initialize GPS serial communication
+SoftwareSerial gps_serial(RXPinGPS, TXPinGPS);
+
+// Define LoRa Module RX/TX Pins and Baud Rate
+static const int RXPinLORA = 10, TXPinLORA = 11;
+static const uint32_t LORABaud = 9600;
+
+// Initialize LORA serial communication
+SoftwareSerial lora_serial(RXPinLORA, TXPinLORA);  // RN2483: Pro Mini D10=TX->RN RX, D11=RX->RN TX
+rn2xx3 myLora(lora_serial);
+
+// Initialize random global location coordinates
+float LAT_DEG = 56.174734f;
+float LON_DEG = 13.586034f;
+
+// Helpers function
+static inline void encodeInt32BE(int32_t value, uint8_t *out) {
+  out[0] = (uint8_t)((value >> 24) & 0xFF);
+  out[1] = (uint8_t)((value >> 16) & 0xFF);
+  out[2] = (uint8_t)((value >> 8) & 0xFF);
+  out[3] = (uint8_t)(value & 0xFF);
+}
+
+/*THIS NEEDS TO BE UPDATED!*/
+static inline void led_on() {
+  digitalWrite(13, HIGH);
+}
+static inline void led_off() {
+  digitalWrite(13, LOW);
+}
+
+// Global singla received variable
+
+bool signal_received = false;
+//// GPS END ////
+
+const int led = 3;
 const int speaker = 6;
 const int button = 7;
 const int US_Echo = 8;
@@ -44,13 +91,31 @@ void setup() {
   pinMode(photoRes, INPUT);
   pinMode(voltPin, INPUT);
 
-  // Setup LoraWan uplink
-  // Open serial communications and wait for port to open:
-  Serial.begin(57600); //serial port to computer
-  mySerial.begin(9600); //serial port to radio
+  // GPS //
+  // Set Buildin LED to Output mode
+  pinMode(13, OUTPUT);
+
+  // Initialize Serial Communication
+  Serial.begin(57600);
+
+  // Initialize LORA and GPS Serial
+  lora_serial.begin(LORABaud);
+  gps_serial.begin(GPSBaud);
+
+  // Print feedback to the user
   Serial.println("Startup");
+  
+  // Initialize radio/lora
   initialize_radio();
-  myLora.tx("TTN Mapper on TTN Enschede node");
+
+  // Wait 1s
+  delay(1000);
+
+  // Send an initial false alert
+  sendAlertPacket(false, LAT_DEG, LON_DEG);
+
+  // Wait 15s. Simulate that the user did not pressed the button yet
+  delay(15000);
 }
 
 void loop() {
@@ -79,21 +144,23 @@ void loop() {
   // button handling
   buttonState = digitalRead(button);
   if(buttonState == HIGH){
-    // if pressed send SOS, also needs GPS coords!!!
-    Serial.println("TXing");
-    myLora.tx("SOS");
+    // Serial.print("BUTTON_DEBUG");
+    // if pressed send SOS
+    buttonPressed();
     // Also sound speaker?
     tone(speaker, 1000); // Start 1 KHz tone for 10 secs
-    delay(10000);
+    delay(2000);
     noTone(speaker); // Stop tone
   }else{
     // if not pressed do nothing? maybe have normal behavior run here?
   }
 
   // Calc battery voltage
+  /*
   int rawVolt = analogRead(voltPin);
   float VoutVolt = (rawVolt / 1023.0) * Vcc;
   float Vcap = VoutVolt * (R1 + R2) / R2;
+  */
 
   // Handle PhotoResistor behavior
   photoVal = analogRead(photoRes);
@@ -106,51 +173,124 @@ void loop() {
   }
 
   // Go sleep? Need to handle some kind of sleep behavior
-  delay(1000);
+  delay(4000);
 }
 
-void initialize_radio(){
-  //reset rn2483
-  pinMode(12, OUTPUT);
+/*******************************
+GPS STUFF
+********************************/
+// LoRaWAN init
+void initialize_radio() {
+  lora_serial.listen(); // Listen to the LORA Serial
+  pinMode(12, OUTPUT);          // RN2483 RESET
   digitalWrite(12, LOW);
   delay(500);
   digitalWrite(12, HIGH);
 
-  delay(100); //wait for the RN2xx3's startup message
-  mySerial.flush();
+  delay(100);
+  lora_serial.flush();
 
-  //Autobaud the rn2483 module to 9600. The default would otherwise be 57600.
   myLora.autobaud();
 
-  //check communication with radio
   String hweui = myLora.hweui();
-  while(hweui.length() != 16){
-    Serial.println("Communication with RN2xx3 unsuccessful. Power cycle the board.");
-    Serial.println(hweui);
+  while (hweui.length() != 16) {
+    Serial.println("RN2xx3 not responding. Retrying in 10s...");
     delay(10000);
     hweui = myLora.hweui();
   }
 
-  //print out the HWEUI so that we can register it via ttnctl
-  Serial.println("When using OTAA, register this DevEUI: ");
-  Serial.println(myLora.hweui());
-  Serial.println("RN2xx3 firmware version:");
-  Serial.println(myLora.sysver());
+  Serial.print("DevEUI: "); Serial.println(hweui);
+  Serial.print("FW: ");     Serial.println(myLora.sysver());
+  Serial.println("Joining TTN (OTAA)...");
 
-  //configure your keys and join the network
-  Serial.println("Trying to join TTN");
-  bool join_result = false;
+  // AppEUI/AppKey from TTN
+  const char *appEui = "0004A30B01068CD7";
+  const char *appKey = "F1F4FB8E0D22788C38FE41D7E1AAE9C6";
 
-  // CHANGE THIS TO OUR APP EUI AND APP KEY!!!
-  const char *appEui = "0000000000000000";
-  const char *appKey = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-
-  join_result = myLora.initOTAA(appEui, appKey);
-
-  while(!join_result){
-    Serial.println("Unable to join. Are your keys correct, and do you have TTN coverage?");
-    delay(60000); //delay a minute before retry
-    join_result = myLora.init();
+  bool joined = myLora.initOTAA(appEui, appKey);
+  while (!joined) {
+    Serial.println("Join failed. Retrying in 60s...");
+    delay(60000);
+    joined = myLora.initOTAA(appEui, appKey);
   }
-  Serial.println("Successfully joined TTN");
+  Serial.println("Joined TTN.");
+}
+
+// Uplink packet + downlink check 
+void sendAlertPacket(bool alert, float lat_deg, float lon_deg) {
+  lora_serial.listen(); // Listen to the LORA Serial
+  // Convert to signed 32-bit microdegrees
+  int32_t lat_i = (int32_t)lroundf(lat_deg * 1000000.0f);
+  int32_t lon_i = (int32_t)lroundf(lon_deg * 1000000.0f);
+
+  // Payload: [alert(1)][lat(4)][lon(4)]
+  uint8_t payload[9];
+  payload[0] = alert ? 1 : 0;
+  encodeInt32BE(lat_i, &payload[1]);
+  encodeInt32BE(lon_i, &payload[5]);
+
+  Serial.print("TX alert="); Serial.print(alert ? "true" : "false");
+  Serial.print(" lat=");     Serial.print(lat_deg, 6);
+  Serial.print(" lon=");     Serial.println(lon_deg, 6);
+
+  led_on();
+  myLora.txBytes(payload, sizeof(payload));  // default FPort=1
+  led_off();
+
+  // Check for downlink
+  String downlink = myLora.getRx(); 
+  if (downlink.length() > 0) {
+    Serial.print("Downlink received: ");
+    Serial.println(downlink);
+    handleDownlink(downlink);
+  } else {
+    Serial.println("No downlink message.");
+  }
+}
+
+// Interpret downlink payload (HEX ASCII string from rn2xx3 lib)
+void handleDownlink(String msg) {
+  lora_serial.listen(); // Listen to the LORA Serial
+  msg.trim();
+  // If we receive: 01 = help confirmation
+  if (msg == "01" || msg == "1") {
+    Serial.println("Signal received. Help is coming!");
+    signal_received = true;
+    delay(1000);
+    sendAlertPacket(false, LAT_DEG, LON_DEG);
+    // buzzer will also be triggered here
+  } else {
+    Serial.print("Unknown downlink command: ");
+    Serial.println(msg);
+  }
+}
+
+// Get location
+void get_location(){
+  int sent_loc = false;
+  while (sent_loc == false){
+    gps_serial.listen(); // Listen to the GPS Serial
+      while (gps_serial.available() > 0){
+        gps.encode(gps_serial.read());
+        if (gps.location.isUpdated()){
+          LAT_DEG = gps.location.lat();
+          LON_DEG = gps.location.lng();
+          sent_loc = true;
+        }
+      }
+  }
+}
+
+void buttonPressed(){
+  get_location(); // Get current location
+  signal_received = false; // Initialize signal receival as False
+  sendAlertPacket(true, LAT_DEG, LON_DEG); // Send location and alert
+  delay(10000);
+  // Send an uplink message until the caregiver confirms acknowledgment of the alert
+  // This is needed because LORA can receive downlink only after an uplink
+  while (signal_received == false){ 
+    sendAlertPacket(false, LAT_DEG, LON_DEG);
+    delay(1000);
+    break; // remove later
+  }
 }

@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <math.h>
 #include <TinyGPS++.h>
-#include <SoftwareSerial.h>
 
 // Define GPS Module RX/TX Pins and Baud Rate
 static const int RXPinGPS = 4, TXPinGPS = 5; //On the actual module are: RXPinGPS = TX on the module, TXPinGPS = RX on the module
