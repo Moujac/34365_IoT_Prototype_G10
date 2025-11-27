@@ -86,7 +86,7 @@ bool signal_received = false;
 
 const int ledPin = 5;  // this can be handled by the GPIO extender
 const int speakerPin = 6;
-const int buttonPin = 7;
+const int buttonPin = 2;
 // this one can be turned on and off by IO Extender
 const int USEcho = 8;
 const int USTrig = 9;
@@ -226,6 +226,8 @@ void setupComponents() {
   pinMode(USTrig, OUTPUT);
   pinMode(photoRes, INPUT);
   pinMode(voltPin, INPUT);
+
+  attachInterrupt(digitalPinToInterrupt(buttonPin), buttonPin, RISING);
 
   // GPS INIT //
   // Set Buildin LED to Output mode
@@ -648,8 +650,8 @@ void setup() {
 
 
   //enable pin interrupt
-  PCICR |= 1 << PCIE0;
-  PCMSK0 |= 1 << PCINT0;
+  //PCICR |= 1 << PCIE0;
+  //PCMSK0 |= 1 << PCINT0;
 
   /*digitalWrite(LED_BUILTIN, HIGH); 
   delay(getWDTIntervalMs()); 
@@ -769,6 +771,15 @@ void emergencyButtonHandler() {
 ISR(WDT_vect) {
   // Reset WDIE to 1
   WDTCSR |= 1 << WDIE;
+}
+
+// NEW ISR
+// Would it not be better to just have a flag here and handle based on flag in main loop???
+void wakeButton() {
+  //if on/off button
+  onOffButtonHandler();
+  // else if Emergency Button
+  emergencyButtonHandler();
 }
 
 /*ISR(PCINT0_vect) {
