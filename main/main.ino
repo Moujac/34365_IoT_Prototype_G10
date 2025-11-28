@@ -7,20 +7,11 @@
 #include <math.h>
 #include <TinyGPS++.h>
 
-// PIN Allocation:
-// LoraWan (RN2483A) = D10, D11, D12 (As previusly used in class)
-// GPS Tx & Rx = D4, D5
-// LED(s) = D3
-// Speaker = D6
-// SWITCH (Button) = D7
-// Ultra Sonic = D8, D9
-// Photocell = A0
-// Battery voltage sensor = A1 (CURRENTLY NOT USED)
-// GPIO Extender (maybe redundant) = A4, A5
-
-//// GPS STUFF ////
+/*******************************
+********** GPS STUFF ***********
+*******************************/
 // Define GPS Module RX/TX Pins and Baud Rate
-static const int RXPinGPS = 4, TXPinGPS = 5;  //On the actual module are: RXPinGPS = TX on the module, TXPinGPS = RX on the module
+static const int RXPinGPS = 4, TXPinGPS = 5; //On the actual module are: RXPinGPS = TX on the module, TXPinGPS = RX on the module
 static const uint32_t GPSBaud = 9600;
 
 // Create a TinyGPS++ object
@@ -34,7 +25,7 @@ static const int RXPinLORA = 10, TXPinLORA = 11;
 static const uint32_t LORABaud = 9600;
 
 // Initialize LORA serial communication
-SoftwareSerial lora_serial(RXPinLORA, TXPinLORA);  // RN2483: Pro Mini D10=TX->RN RX, D11=RX->RN TX
+SoftwareSerial lora_serial(RXPinLORA, TXPinLORA); // RN2483: Pro Mini D10=TX->RN RX, D11=RX->RN TX
 rn2xx3 myLora(lora_serial);
 
 // Initialize random global location coordinates
@@ -42,25 +33,33 @@ float LAT_DEG = 56.174734f;
 float LON_DEG = 13.586034f;
 
 // Helpers function
-static inline void encodeInt32BE(int32_t value, uint8_t *out) {
+static inline void encodeInt32BE(int32_t value, uint8_t* out) {
   out[0] = (uint8_t)((value >> 24) & 0xFF);
   out[1] = (uint8_t)((value >> 16) & 0xFF);
-  out[2] = (uint8_t)((value >> 8) & 0xFF);
-  out[3] = (uint8_t)(value & 0xFF);
+  out[2] = (uint8_t)((value >> 8)  & 0xFF);
+  out[3] = (uint8_t)( value        & 0xFF);
 }
 
-/*THIS NEEDS TO BE UPDATED!*/
-static inline void led_on() {
-  digitalWrite(13, HIGH);
-}
-static inline void led_off() {
-  digitalWrite(13, LOW);
-}
+static inline void led_on()  { digitalWrite(13, HIGH); }
+static inline void led_off() { digitalWrite(13, LOW);  }
 
 // Global singla received variable
-
 bool signal_received = false;
-//// GPS END ////
+
+/*******************************
+******** GPS STUFF END *********
+*******************************/
+
+// PIN Allocation:
+// LoraWan (RN2483A) = D10, D11, D12 (As previusly used in class)
+// GPS Tx & Rx = D4, D5
+// LED(s) = D3
+// Speaker = D6
+// SWITCH (Button) = D7
+// Ultra Sonic = D8, D9
+// Photocell = A0
+// Battery voltage sensor = A1
+// GPIO Extender (maybe redundant) = A4, A5
 
 const int led = 3;
 const int speaker = 6;
@@ -70,18 +69,11 @@ const int US_Trig = 9;
 const int photoRes = A0;
 const int voltPin = A1;
 
-float timing = 0.0;
-float distance = 0.0;
-
-const float Vcc = 3.3;
+const float Vcc = 3.6; // 3.6V battery
 const float R1 = 10000.0;   
 const float R2 = 10000.0;   
 
-int buttonState = 0;
-
-int photoVal = 0; // 0 to 1023
-
-void setup() {
+void setup(){
   // Setup pins
   pinMode(led, OUTPUT);
   pinMode(speaker, OUTPUT);
@@ -91,7 +83,88 @@ void setup() {
   pinMode(photoRes, INPUT);
   pinMode(voltPin, INPUT);
 
-  // GPS //
+  gps_setup();
+}
+
+void USHandler(){
+  digitalWrite(US_Trig, LOW);
+  delay(2);
+  digitalWrite(US_Trig, HIGH);
+  delay(10);
+  digitalWrite(US_Trig, LOW);
+
+  float timing = pulseIn(US_Echo, HIGH);
+  float distance = (timing * 0.0343) / 2; // Distance in cm
+
+  // Debug distance
+  /*Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");*/
+
+  // Buzz if too close !!!
+  if(distance < 20){ // Not much lower, would effect accuracy
+    tone(speaker, 500); // Start 500 Hz tone
+  }else{
+    noTone(speaker);
+  }
+}
+
+void ButtonCheck(){
+  int buttonState = digitalRead(button);
+  if(buttonState == HIGH){
+    //Serial.print("BUTTON_DEBUG"); // Can be a bit finicky
+    // If pressed send SOS
+    buttonPressed();
+    tone(speaker, 1000); // Start 1 KHz tone for 2 secs, for feedback
+    delay(2000); // Maybe change to sleep?
+    noTone(speaker);
+  }
+}
+
+void BatteryVoltageCheck(){
+  // Calc battery voltage
+  int rawVolt = analogRead(voltPin);
+  float VoutVolt = (rawVolt / 1023.0) * Vcc;
+  float Vcap = VoutVolt * (R1 + R2) / R2; // Current voltage of the battery
+  // Buzz if voltage is low
+  if(Vcap < 3.3){ // High value to test out
+    tone(speaker, 100); // Start 100 Hz tone
+  }else{
+    noTone(speaker);
+  }
+}
+
+PhotoHandler(){
+  int photoVal = analogRead(photoRes); // 0 to 1023
+  if(photoVal < 512){ // Value needs to be calibrated
+    // It's dark, turn on LED(s)
+    digitalWrite(led, HIGH);
+  }else{
+    // It's light, turn off LED(s)
+    digitalWrite(led, LOW);
+  }
+}
+
+
+void loop(){
+  // Check for emergency button press first
+  ButtonCheck();
+  // Danger close?
+  USHandler();
+  // Turn on the sun
+  PhotoHandler();
+  // Check battery voltage
+  BatteryVoltageCheck();
+
+  // Simululate the 4 sec sleep interval
+  delay(4000);
+}
+
+/*******************************
+GPS STUFF
+********************************/
+// GPS SETUP
+void gps_setup(){
   // Set Buildin LED to Output mode
   pinMode(13, OUTPUT);
 
@@ -118,67 +191,6 @@ void setup() {
   delay(15000);
 }
 
-void loop() {
-  // Ultrasonic behavior
-  digitalWrite(US_Trig, LOW);
-  delay(2);
-  digitalWrite(US_Trig, HIGH);
-  delay(10);
-  digitalWrite(US_Trig, LOW);
-
-  timing = pulseIn(US_Echo, HIGH);
-  distance = (timing*0.0343)/2; // distance in cm
-
-  // debug distance
-  Serial.print("Distance: ");
-  Serial.print(distance);
-  Serial.println(" cm");
-
-  // handle sound if too close
-  if(distance < 20){ // check if accuracy remains at close range 
-    tone(speaker, 500); // Start 500 Hz tone
-  }else{
-    noTone(speaker); // Stop tone, might kill distress sound
-  }
-
-  // button handling
-  buttonState = digitalRead(button);
-  if(buttonState == HIGH){
-    // Serial.print("BUTTON_DEBUG");
-    // if pressed send SOS
-    buttonPressed();
-    // Also sound speaker?
-    tone(speaker, 1000); // Start 1 KHz tone for 10 secs
-    delay(2000);
-    noTone(speaker); // Stop tone
-  }else{
-    // if not pressed do nothing? maybe have normal behavior run here?
-  }
-
-  // Calc battery voltage
-  /*
-  int rawVolt = analogRead(voltPin);
-  float VoutVolt = (rawVolt / 1023.0) * Vcc;
-  float Vcap = VoutVolt * (R1 + R2) / R2;
-  */
-
-  // Handle PhotoResistor behavior
-  photoVal = analogRead(photoRes);
-  if(photoVal < 512){ // Need to figure out how value relates to light level
-    // It's dark, turn on LED(s)?
-    digitalWrite(led, HIGH);
-  }else{
-    // It's light, turn off LED(s)?
-    digitalWrite(led, LOW);
-  }
-
-  // Go sleep? Need to handle some kind of sleep behavior
-  delay(4000);
-}
-
-/*******************************
-GPS STUFF
-********************************/
 // LoRaWAN init
 void initialize_radio() {
   lora_serial.listen(); // Listen to the LORA Serial
@@ -291,6 +303,6 @@ void buttonPressed(){
   while (signal_received == false){ 
     sendAlertPacket(false, LAT_DEG, LON_DEG);
     delay(1000);
-    break; // remove later
+    break; // REMOVE THIS FOR ACTUAL USE!!!
   }
 }
