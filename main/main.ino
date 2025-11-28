@@ -134,7 +134,7 @@ void BatteryVoltageCheck(){
   }
 }
 
-PhotoHandler(){
+void PhotoHandler(){
   int photoVal = analogRead(photoRes); // 0 to 1023
   if(photoVal < 512){ // Value needs to be calibrated
     // It's dark, turn on LED(s)
@@ -154,7 +154,7 @@ void loop(){
   // Turn on the sun
   PhotoHandler();
   // Check battery voltage
-  BatteryVoltageCheck();
+  //BatteryVoltageCheck(); // Uncomment if battery is in use
 
   // Simululate the 4 sec sleep interval
   delay(4000);
@@ -303,6 +303,6 @@ void buttonPressed(){
   while (signal_received == false){ 
     sendAlertPacket(false, LAT_DEG, LON_DEG);
     delay(1000);
-    break; // REMOVE THIS FOR ACTUAL USE!!!
+    //break; // REMOVE THIS FOR ACTUAL USE!!!
   }
 }
