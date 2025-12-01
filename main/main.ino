@@ -112,7 +112,13 @@ void USHandler(){
 void ButtonCheck(){
   int buttonState = digitalRead(button);
   if(buttonState == HIGH){
-    //Serial.print("BUTTON_DEBUG"); // Can be a bit finicky
+    // Quick beep for button feedback
+    tone(speaker, 500);
+    delay(50);
+    noTone(speaker);
+
+    Serial.print("BUTTON_DEBUG"); // Can be a bit finicky
+
     // If pressed send SOS
     buttonPressed();
   }
@@ -153,8 +159,8 @@ void loop(){
   // Check battery voltage
   //BatteryVoltageCheck(); // Uncomment if battery is in use
 
-  // Simululate the 4 sec sleep interval
-  delay(4000);
+  // Simululate the 4 sec sleep interval, set lower for testing
+  delay(500);
 }
 
 /*******************************
@@ -297,7 +303,7 @@ void get_location(){
 }
 
 void buttonPressed(){
-  get_location(); // Get current location
+  //get_location(); // Get current location
   signal_received = false; // Initialize signal receival (by caregiver's mobile app) as False
   sendAlertPacket(true, LAT_DEG, LON_DEG); // Send location and alert
   // Also sound speaker. 2 small beeps
