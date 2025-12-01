@@ -115,9 +115,6 @@ void ButtonCheck(){
     //Serial.print("BUTTON_DEBUG"); // Can be a bit finicky
     // If pressed send SOS
     buttonPressed();
-    tone(speaker, 1000); // Start 1 KHz tone for 2 secs, for feedback
-    delay(2000); // Maybe change to sleep?
-    noTone(speaker);
   }
 }
 
@@ -270,7 +267,13 @@ void handleDownlink(String msg) {
     signal_received = true;
     delay(1000);
     sendAlertPacket(false, LAT_DEG, LON_DEG);
-    // buzzer will also be triggered here
+    // Also sound speaker. 3 small beeps
+    for(int i=0; i<3; i++){
+      tone(speaker, 1000); // Start 1 KHz tone
+      delay(500); // Wait 500ms
+      noTone(speaker); // Stop tone
+      delay(500); // Wait 500ms
+    }
   } else {
     Serial.print("Unknown downlink command: ");
     Serial.println(msg);
@@ -295,14 +298,20 @@ void get_location(){
 
 void buttonPressed(){
   get_location(); // Get current location
-  signal_received = false; // Initialize signal receival as False
+  signal_received = false; // Initialize signal receival (by caregiver's mobile app) as False
   sendAlertPacket(true, LAT_DEG, LON_DEG); // Send location and alert
-  delay(10000);
+  // Also sound speaker. 2 small beeps
+    for(int i=0; i<2; i++){
+      tone(speaker, 1000); // Start 1 KHz tone
+      delay(500); // Wait 500ms
+      noTone(speaker); // Stop tone
+      delay(500); // Wait 500ms
+    }
+  delay(1000);
   // Send an uplink message until the caregiver confirms acknowledgment of the alert
   // This is needed because LORA can receive downlink only after an uplink
   while (signal_received == false){ 
     sendAlertPacket(false, LAT_DEG, LON_DEG);
     delay(1000);
-    //break; // REMOVE THIS FOR ACTUAL USE!!!
   }
 }
