@@ -29,8 +29,8 @@ SoftwareSerial lora_serial(RXPinLORA, TXPinLORA); // RN2483: Pro Mini D10=TX->RN
 rn2xx3 myLora(lora_serial);
 
 // Initialize random global location coordinates
-float LAT_DEG = 56.174734f;
-float LON_DEG = 13.586034f;
+float LAT_DEG = 55.786974f;
+float LON_DEG = 12.523384f;
 
 // Helpers function
 static inline void encodeInt32BE(int32_t value, uint8_t* out) {
@@ -307,17 +307,18 @@ void buttonPressed(){
   signal_received = false; // Initialize signal receival (by caregiver's mobile app) as False
   sendAlertPacket(true, LAT_DEG, LON_DEG); // Send location and alert
   // Also sound speaker. 2 small beeps
-    for(int i=0; i<2; i++){
-      tone(speaker, 1000); // Start 1 KHz tone
-      delay(500); // Wait 500ms
-      noTone(speaker); // Stop tone
-      delay(500); // Wait 500ms
-    }
-  delay(1000);
+  for(int i=0; i<2; i++){
+    tone(speaker, 1000); // Start 1 KHz tone
+    delay(500); // Wait 500ms
+    noTone(speaker); // Stop tone
+    delay(500); // Wait 500ms
+  }
+  delay(10000);
+  sendAlertPacket(false, LAT_DEG, LON_DEG);
   // Send an uplink message until the caregiver confirms acknowledgment of the alert
   // This is needed because LORA can receive downlink only after an uplink
   while (signal_received == false){ 
     sendAlertPacket(false, LAT_DEG, LON_DEG);
-    delay(1000);
+    delay(5000);
   }
 }
