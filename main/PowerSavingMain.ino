@@ -1,4 +1,8 @@
-/***¤FLS
+//#################################################
+//# Includes                                 ¤FLS #
+//#################################################
+
+/***
  *
  * Name: PowerSaving main
  * Author: primarily Julian.T.D (we were not able to 
@@ -94,7 +98,7 @@
  *      //INTERRUPT AND WDT FUNCTIONS   ¤ITR
  * */
 //#################################################
-//# Includes ¤INC                                 #
+//# Includes                                 ¤INC #
 //#################################################
 #include <avr/sleep.h>
 #include <avr/wdt.h>
