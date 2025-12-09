@@ -76,6 +76,25 @@
       rather than the Arduino Pro Mini, and then run the 3V3 voltage 
       into its Raw pin.
 
+  * retrospect/ what went wrong:
+      we believe that as power hungry components (GPS+LoRa) are cut off or reattached 
+        to the circuit, then in the slight amount of time, in which the 
+        circuit adapts to the new draw, it experience excessive or insufficient 
+        voltage and current, causing the voltage to potentially raise beyond 
+        what the components can take, and what the Arduino pro mini can survive
+        - as we run the power supply into its vcc, rather than through RAW. 
+        (at least thats what we think - looking at old pictures, i cannot 
+        see that we first run it into the VCC and then into the circuit... instead
+        we run the power from ISParp into the VCC trace of the breadboard, 
+        which goes into all components, including the VCC of the arduino pro mini)
+        This is however odd, as any microcontroller should have decoupling capacitors, 
+        but who knows - maybe the very noise heavy system, causes the unstable period 
+        to extend beyond the capacitors capacitance.
+
+        This would also explain why the Arduino Uno survives, because it can take 5V, 
+        and it is the one that supplies the 3V3 volt... and it likely has more 
+        fail-safe features.
+
  *
  *
  */
