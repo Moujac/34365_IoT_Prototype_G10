@@ -1,0 +1,27 @@
+//by mads
+//#### LORAWAN TRANCEIVER CODE SUGGESTION ####
+
+//See line 607 in library documentation
+lora_serial.sleep(4000); //4sec
+//this will turn off communication for the time duration = can't receive from things network
+
+
+//this is a trick to make it wake up immediately
+lora_serial.write((byte)0x00);
+delay(20);
+
+
+//#### LED BLINKING CODE SUGGESTION ####
+
+bool dark = false;
+bool haveBlinked = false;
+
+dark = photoVal < 512;
+
+if(dark && !haveBlinked){ 
+    digitalWrite(led, HIGH);
+    haveBlinked = true;
+} else {
+    digitalWrite(led, LOW);
+    haveBlinked = false;
+}
