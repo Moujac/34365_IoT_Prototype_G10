@@ -5,4 +5,4 @@ Otherwise, follow schematic and pin definitions as defined in the main.ino. Some
 Note that new_main contains code for the unfinalized sleep implementation.
 
 
-"BlindCare" folder is the app code, which was made in Swift using Xcode. 
+"BlindCare" folder is the app code, which was made in Swift using Xcode. In the folder, the actual code is in BlindCare(root folder) -> BlindCare, this is where our logic and UI were made.
