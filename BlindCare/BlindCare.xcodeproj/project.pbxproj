@@ -1,0 +1,648 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EA8F62B22EC50C590073A013 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = EA8F62B12EC50C590073A013 /* Logging */; };
+		EA8F62B52EC525F60073A013 /* SignalRClient in Frameworks */ = {isa = PBXBuildFile; productRef = EA8F62B42EC525F60073A013 /* SignalRClient */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EAF583732EBC960F00D418E2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EAF5835D2EBC960C00D418E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EAF583642EBC960C00D418E2;
+			remoteInfo = BlindCare;
+		};
+		EAF5837D2EBC960F00D418E2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EAF5835D2EBC960C00D418E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EAF583642EBC960C00D418E2;
+			remoteInfo = BlindCare;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EAF583652EBC960C00D418E2 /* BlindCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlindCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAF583722EBC960F00D418E2 /* BlindCareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlindCareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAF5837C2EBC960F00D418E2 /* BlindCareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlindCareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		EAF583672EBC960C00D418E2 /* BlindCare */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = BlindCare;
+			sourceTree = "<group>";
+		};
+		EAF583752EBC960F00D418E2 /* BlindCareTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = BlindCareTests;
+			sourceTree = "<group>";
+		};
+		EAF5837F2EBC960F00D418E2 /* BlindCareUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = BlindCareUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EAF583622EBC960C00D418E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA8F62B52EC525F60073A013 /* SignalRClient in Frameworks */,
+				EA8F62B22EC50C590073A013 /* Logging in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAF5836F2EBC960F00D418E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAF583792EBC960F00D418E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EA8F62B32EC525F60073A013 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EAF5835C2EBC960C00D418E2 = {
+			isa = PBXGroup;
+			children = (
+				EAF583672EBC960C00D418E2 /* BlindCare */,
+				EAF583752EBC960F00D418E2 /* BlindCareTests */,
+				EAF5837F2EBC960F00D418E2 /* BlindCareUITests */,
+				EA8F62B32EC525F60073A013 /* Frameworks */,
+				EAF583662EBC960C00D418E2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EAF583662EBC960C00D418E2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EAF583652EBC960C00D418E2 /* BlindCare.app */,
+				EAF583722EBC960F00D418E2 /* BlindCareTests.xctest */,
+				EAF5837C2EBC960F00D418E2 /* BlindCareUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EAF583642EBC960C00D418E2 /* BlindCare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAF583862EBC960F00D418E2 /* Build configuration list for PBXNativeTarget "BlindCare" */;
+			buildPhases = (
+				EAF583612EBC960C00D418E2 /* Sources */,
+				EAF583622EBC960C00D418E2 /* Frameworks */,
+				EAF583632EBC960C00D418E2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EA8F62932EC238210073A013 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EAF583672EBC960C00D418E2 /* BlindCare */,
+			);
+			name = BlindCare;
+			packageProductDependencies = (
+				EA8F62B12EC50C590073A013 /* Logging */,
+				EA8F62B42EC525F60073A013 /* SignalRClient */,
+			);
+			productName = BlindCare;
+			productReference = EAF583652EBC960C00D418E2 /* BlindCare.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EAF583712EBC960F00D418E2 /* BlindCareTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAF583892EBC960F00D418E2 /* Build configuration list for PBXNativeTarget "BlindCareTests" */;
+			buildPhases = (
+				EAF5836E2EBC960F00D418E2 /* Sources */,
+				EAF5836F2EBC960F00D418E2 /* Frameworks */,
+				EAF583702EBC960F00D418E2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EAF583742EBC960F00D418E2 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EAF583752EBC960F00D418E2 /* BlindCareTests */,
+			);
+			name = BlindCareTests;
+			packageProductDependencies = (
+			);
+			productName = BlindCareTests;
+			productReference = EAF583722EBC960F00D418E2 /* BlindCareTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EAF5837B2EBC960F00D418E2 /* BlindCareUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAF5838C2EBC960F00D418E2 /* Build configuration list for PBXNativeTarget "BlindCareUITests" */;
+			buildPhases = (
+				EAF583782EBC960F00D418E2 /* Sources */,
+				EAF583792EBC960F00D418E2 /* Frameworks */,
+				EAF5837A2EBC960F00D418E2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EAF5837E2EBC960F00D418E2 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EAF5837F2EBC960F00D418E2 /* BlindCareUITests */,
+			);
+			name = BlindCareUITests;
+			packageProductDependencies = (
+			);
+			productName = BlindCareUITests;
+			productReference = EAF5837C2EBC960F00D418E2 /* BlindCareUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EAF5835D2EBC960C00D418E2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2610;
+				TargetAttributes = {
+					EAF583642EBC960C00D418E2 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
+					EAF583712EBC960F00D418E2 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = EAF583642EBC960C00D418E2;
+					};
+					EAF5837B2EBC960F00D418E2 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = EAF583642EBC960C00D418E2;
+					};
+				};
+			};
+			buildConfigurationList = EAF583602EBC960C00D418E2 /* Build configuration list for PBXProject "BlindCare" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EAF5835C2EBC960C00D418E2;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				EA8F628E2EC232E30073A013 /* XCRemoteSwiftPackageReference "signalr-client-swift" */,
+				EA8F62A02EC50C060073A013 /* XCRemoteSwiftPackageReference "swift-log" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EAF583662EBC960C00D418E2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EAF583642EBC960C00D418E2 /* BlindCare */,
+				EAF583712EBC960F00D418E2 /* BlindCareTests */,
+				EAF5837B2EBC960F00D418E2 /* BlindCareUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EAF583632EBC960C00D418E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAF583702EBC960F00D418E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAF5837A2EBC960F00D418E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EAF583612EBC960C00D418E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAF5836E2EBC960F00D418E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAF583782EBC960F00D418E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EA8F62932EC238210073A013 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = EA8F62922EC238210073A013 /* SignalRClient */;
+		};
+		EAF583742EBC960F00D418E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EAF583642EBC960C00D418E2 /* BlindCare */;
+			targetProxy = EAF583732EBC960F00D418E2 /* PBXContainerItemProxy */;
+		};
+		EAF5837E2EBC960F00D418E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EAF583642EBC960C00D418E2 /* BlindCare */;
+			targetProxy = EAF5837D2EBC960F00D418E2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		EAF583842EBC960F00D418E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = S63MXA54N2;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EAF583852EBC960F00D418E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = S63MXA54N2;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EAF583872EBC960F00D418E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S63MXA54N2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayinadam.lightapp.BlindCare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EAF583882EBC960F00D418E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S63MXA54N2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayinadam.lightapp.BlindCare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EAF5838A2EBC960F00D418E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S63MXA54N2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayinadam.lightapp.BlindCareTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BlindCare.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BlindCare";
+			};
+			name = Debug;
+		};
+		EAF5838B2EBC960F00D418E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S63MXA54N2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayinadam.lightapp.BlindCareTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BlindCare.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BlindCare";
+			};
+			name = Release;
+		};
+		EAF5838D2EBC960F00D418E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S63MXA54N2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayinadam.lightapp.BlindCareUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = BlindCare;
+			};
+			name = Debug;
+		};
+		EAF5838E2EBC960F00D418E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S63MXA54N2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayinadam.lightapp.BlindCareUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = BlindCare;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EAF583602EBC960C00D418E2 /* Build configuration list for PBXProject "BlindCare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAF583842EBC960F00D418E2 /* Debug */,
+				EAF583852EBC960F00D418E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EAF583862EBC960F00D418E2 /* Build configuration list for PBXNativeTarget "BlindCare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAF583872EBC960F00D418E2 /* Debug */,
+				EAF583882EBC960F00D418E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EAF583892EBC960F00D418E2 /* Build configuration list for PBXNativeTarget "BlindCareTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAF5838A2EBC960F00D418E2 /* Debug */,
+				EAF5838B2EBC960F00D418E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EAF5838C2EBC960F00D418E2 /* Build configuration list for PBXNativeTarget "BlindCareUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAF5838D2EBC960F00D418E2 /* Debug */,
+				EAF5838E2EBC960F00D418E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EA8F628E2EC232E30073A013 /* XCRemoteSwiftPackageReference "signalr-client-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dotnet/signalr-client-swift";
+			requirement = {
+				branch = dev;
+				kind = branch;
+			};
+		};
+		EA8F62A02EC50C060073A013 /* XCRemoteSwiftPackageReference "swift-log" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-log.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EA8F62922EC238210073A013 /* SignalRClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA8F628E2EC232E30073A013 /* XCRemoteSwiftPackageReference "signalr-client-swift" */;
+			productName = SignalRClient;
+		};
+		EA8F62B12EC50C590073A013 /* Logging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA8F62A02EC50C060073A013 /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
+		};
+		EA8F62B42EC525F60073A013 /* SignalRClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA8F628E2EC232E30073A013 /* XCRemoteSwiftPackageReference "signalr-client-swift" */;
+			productName = SignalRClient;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = EAF5835D2EBC960C00D418E2 /* Project object */;
+}
